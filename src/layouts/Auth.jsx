@@ -1,4 +1,5 @@
 
+import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { Outlet } from 'react-router-dom';
 
@@ -8,9 +9,10 @@ const Auth = () => {
             <nav className='bg-base-200'>
             <Navbar></Navbar>
             </nav>
-            <section className='flex justify-center items-center min-h-screen '>
+            <section className='flex bg-[#ede0d4] justify-center items-center min-h-screen '>
                 <Outlet></Outlet>
             </section>
+            <Footer></Footer>
         </div>
     );
 };

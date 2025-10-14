@@ -10,7 +10,16 @@ const Navbar = () => {
     const subMenu = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to=''>All Artifacts</Link></li>
-        <li><Link to=''>Add Artifacts</Link></li>
+        <li><Link to=''>Add Artifactss</Link></li>
+        <li>
+            <details>
+                <summary>My Profile</summary>
+                <ul className="p-2 bg-[#9c6644] text-[#ede0d4] w-40">
+                    <li><Link to=''> My Artifacts </Link></li>
+                    <li><Link to=''> Liked Artifacts </Link></li>
+                </ul>
+            </details>
+        </li>
     </>
 
 
@@ -23,7 +32,7 @@ const Navbar = () => {
                     </div>
                     <ul
                         tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        className="menu menu-sm dropdown-content bg-[#9c6644] text-[#ede0d4] rounded-box z-1 mt-3 w-52 p-2 shadow">
                         {subMenu}
                     </ul>
                 </div>
@@ -32,7 +41,7 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu text-lg menu-horizontal px-1">
+                <ul className="menu  text-lg menu-horizontal px-1">
                     {subMenu}
                 </ul>
             </div>
@@ -62,7 +71,7 @@ const Navbar = () => {
                             </div>
                         </>
                     ) : (
-                        <Link to="" className="bg-[#e6ccb2] text-[#7f5539] border-none btn h-8 mt-1.5 ml-3">
+                        <Link to="/auth/login" className="bg-[#e6ccb2] text-[#7f5539] border-none btn h-8 mt-1.5 ml-3">
                             <FiLogIn /> Login
                         </Link>
                     )
