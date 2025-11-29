@@ -9,7 +9,7 @@ const Navbar = () => {
     const subMenu = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to=''>All Artifacts</Link></li>
-        <li><Link to=''>Add Artifactss</Link></li>
+        <li><Link to='/addArtifact'>Add Artifactss</Link></li>
         <li>
             <details>
                 <summary>My Profile</summary>
