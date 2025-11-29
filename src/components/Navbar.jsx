@@ -6,7 +6,6 @@ import AuthContext from '../provider/AuthContext';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
-
     const subMenu = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to=''>All Artifacts</Link></li>
@@ -22,10 +21,9 @@ const Navbar = () => {
         </li>
     </>
 
-
     return (
         <div className="navbar bg-[#9c6644] text-[#ede0d4] shadow-sm flex justify-between text-3xl lg:text-2xl">
-            <div className="navbar-start max-w-[200px]">
+            <div className="navbar-start max-w-[200px] ">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
@@ -49,25 +47,17 @@ const Navbar = () => {
                 {
                     user && user?.email ? (
                         <>
-                            <div className="flex md:hidden bg-[#e6ccb2] text-[#7f5539]">
-                                <button onClick={logOut} className="btn btn-sm ml-3">
+                            <div className="flex md:hidden">
+                                <button onClick={logOut} className="btn w-full text-[#7f5539] border-none bg-[#e6ccb2] btn-sm ">
                                     Logout <FiLogOut />
                                 </button>
                             </div>
 
-                            <div className="hidden md:flex">
-                                <ul className="menu menu-horizontal">
-                                    <li>
-                                        <details>
-                                            <summary>{user.displayName}</summary>
-                                            <ul className="bg-[#e6ccb2] font-bold rounded-t-none text-[#7f5539]">
-                                                <li>
-                                                    <button onClick={logOut}>Logout</button>
-                                                </li>
-                                            </ul>
-                                        </details>
-                                    </li>
-                                </ul>
+                            <div className="hidden gap-4 mr-25 md:flex"> 
+                                              
+                                            <img src={user?.photoURL}  title={user?.displayName} className='w-8 h-8 rounded-full'/>                                          
+                                            <button onClick={logOut} className="btn w-full text-[#7f5539]  border-none bg-[#e6ccb2] btn-sm ">Logout</button>
+                 
                             </div>
                         </>
                     ) : (
