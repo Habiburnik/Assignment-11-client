@@ -8,7 +8,7 @@ const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const subMenu = <>
         <li><Link to='/'>Home</Link></li>
-        <li><Link to=''>All Artifacts</Link></li>
+        <li><Link to='/allArtifacts'>All Artifacts</Link></li>
         <li><Link to='/addArtifact'>Add Artifactss</Link></li>
         <li>
             <details>
