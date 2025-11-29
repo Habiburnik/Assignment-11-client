@@ -8,6 +8,7 @@ import AddArtifacts from "../components/pages/AddArtifacts";
 import AllArtifacts from "../components/pages/AllArtifacts";
 import PrivateRoute from "./PrivateRoute";
 import ArtifactsDetails from "../components/pages/ArtifactsDetails";
+import LikedArtifacts from "../components/pages/LikedArtifacts";
 
 
 
@@ -31,6 +32,10 @@ const Router = createBrowserRouter([
             {
                 path: '/artifactsDetails/:id',
                 element: <PrivateRoute><ArtifactsDetails></ArtifactsDetails></PrivateRoute>
+            },
+            {
+                path: '/likedArtifacts',
+                element: <PrivateRoute><LikedArtifacts></LikedArtifacts></PrivateRoute>
             }
         ]
     },

@@ -15,7 +15,7 @@ const Navbar = () => {
                 <summary>My Profile</summary>
                 <ul className="p-2 bg-[#9c6644] text-[#ede0d4] w-40">
                     <li><Link to=''> My Artifacts </Link></li>
-                    <li><Link to=''> Liked Artifacts </Link></li>
+                    <li><Link to='/likedArtifacts'> Liked Artifacts </Link></li>
                 </ul>
             </details>
         </li>

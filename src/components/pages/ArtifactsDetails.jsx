@@ -66,7 +66,7 @@ const ArtifactsDetails = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ userEmail: user.email, userName: user.displayName, artifactName: artifact?.artifactName })
+                    body: JSON.stringify({artifactImage:artifact?.artifactImage  , userEmail: user.email, artifactName: artifact?.artifactName })
                 });
 
             if (!response.ok) throw new Error('Failed to update like');
