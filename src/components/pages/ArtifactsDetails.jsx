@@ -11,6 +11,7 @@ const ArtifactsDetails = () => {
     const [artifact, setArtifact] = useState(null);
     const [loading, setLoading] = useState(true);
     const [liking, setLiking] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -21,6 +22,18 @@ const ArtifactsDetails = () => {
                 if (!response.ok) throw new Error('Artifact not found');
                 const data = await response.json();
                 setArtifact(data);
+                // if user is logged in, check like history
+                if (user?.email) {
+                    try {
+                        const chk = await fetch(`http://localhost:5001/likes/check?artifactId=${id}&userEmail=${encodeURIComponent(user.email)}`);
+                        if (chk.ok) {
+                            const chkJson = await chk.json();
+                            setIsLiked(!!chkJson.isLiked);
+                        }
+                    } catch (e) {
+                        console.warn('Like check failed', e);
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching artifact:', error);
                 Swal.fire({
@@ -34,7 +47,7 @@ const ArtifactsDetails = () => {
         };
 
         fetchArtifact();
-    }, [id]);
+    }, [id, user?.email]);
 
     const handleLike = async () => {
         if (!user) {
@@ -48,12 +61,13 @@ const ArtifactsDetails = () => {
 
         setLiking(true);
         try {
-            const response = await fetch(`http://localhost:5001/artifact/${id}/like`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
+                const response = await fetch(`http://localhost:5001/artifact/${id}/like`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userEmail: user.email, userName: user.displayName, artifactName: artifact?.artifactName })
+                });
 
             if (!response.ok) throw new Error('Failed to update like');
 
@@ -61,8 +75,10 @@ const ArtifactsDetails = () => {
             setArtifact(prevArtifact => ({
                 ...prevArtifact,
                 ...updatedData,
-                likeCount: updatedData.likeCount || (prevArtifact.likeCount + 1)
+                likeCount: typeof updatedData.likeCount === 'number' ? updatedData.likeCount : (prevArtifact.likeCount + 1)
             }));
+            // mark liked and disable button
+            setIsLiked(true);
 
             Swal.fire({
                 title: 'Success!',
@@ -128,11 +144,11 @@ const ArtifactsDetails = () => {
                             </div>
                             <button
                                 onClick={handleLike}
-                                disabled={liking}
-                                className="btn w-full font-bold text-lg py-3 transition-all duration-300 bg-[#9c6644] text-[#ede0d4] hover:bg-[#432818] hover:text-[#ede0d4]"
+                                disabled={liking || isLiked}
+                                className={`btn w-full font-bold text-lg py-3 transition-all duration-300 ${isLiked ? 'bg-red-500 text-white' : 'bg-[#9c6644] text-[#ede0d4] hover:bg-[#432818] hover:text-[#ede0d4]'}`}
                             >
-                                <Heart size={24} fill="none" />
-                                Like ({artifact.likeCount || 0})
+                                <Heart size={24} fill={isLiked ? 'currentColor' : 'none'} />
+                                {isLiked ? `Liked (${artifact.likeCount || 0})` : `Like (${artifact.likeCount || 0})`}
                             </button>
                         </div>
                         <div className="space-y-6">

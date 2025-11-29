@@ -29,7 +29,7 @@ const Artifacts = () => {
                         <div className="card-body bg-[#b08968] text-[#ede0d4]">
                             <h3 className="text-xl font-semibold">{artifact.artifactName}</h3>
                             <p><strong></strong> {artifact.historicalContext}</p>
-                            <p><strong>Like:</strong> {artifact.likeCount}</p>
+                            <p><strong>Likes:</strong> {artifact.likeCount}</p>
                             <div className="card-actions mt-4 justify-end">
                                 <Link to={`/artifactsDetails/${artifact._id}`} className="btn btn-primary bg-[#432818] text-[#ede0d4] text- border-none shadow-none">See Details</Link>
                             </div>
