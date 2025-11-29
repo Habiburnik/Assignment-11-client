@@ -31,7 +31,7 @@ const Artifacts = () => {
                             <p><strong></strong> {artifact.historicalContext}</p>
                             <p><strong>likeCount:</strong> {artifact.likeCount}</p>
                             <div className="card-actions mt-4 justify-end">
-                                <Link to={`/artifacts/${artifact._id}`} className="btn btn-primary bg-[#432818] text-[#ede0d4] text- border-none shadow-none">See Details</Link>
+                                <Link to={`/artifactsDetails/${artifact._id}`} className="btn btn-primary bg-[#432818] text-[#ede0d4] text- border-none shadow-none">See Details</Link>
                             </div>
                         </div>
                     </div>
