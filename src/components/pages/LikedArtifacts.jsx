@@ -9,6 +9,8 @@ const LikedArtifacts = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        
         if (!user?.email) return;
         setLoading(true);
         fetch(`http://localhost:5001/liked-artifacts?userEmail=${(user.email)}`)

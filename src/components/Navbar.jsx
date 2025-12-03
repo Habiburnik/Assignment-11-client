@@ -14,7 +14,7 @@ const Navbar = () => {
             <details>
                 <summary>My Profile</summary>
                 <ul className="p-2 bg-[#9c6644] text-[#ede0d4] w-40">
-                    <li><Link to=''> My Artifacts </Link></li>
+                    <li><Link to='/myArtifacts'> My Artifacts </Link></li>
                     <li><Link to='/likedArtifacts'> Liked Artifacts </Link></li>
                 </ul>
             </details>
@@ -22,7 +22,7 @@ const Navbar = () => {
     </>
 
     return (
-        <div className="navbar bg-[#9c6644] text-[#ede0d4] shadow-sm flex justify-between text-3xl lg:text-2xl">
+        <div className="navbar pt bg-[#9c6644] text-[#ede0d4] shadow-sm flex justify-between text-3xl lg:text-2xl">
             <div className="navbar-start max-w-[200px] ">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
