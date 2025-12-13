@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const AddArtifacts = () => {
     useEffect(() => {
@@ -50,17 +51,12 @@ const AddArtifacts = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5001/addArtifact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(artifactData)
+            axios.post('http://localhost:5001/addArtifact', artifactData, {withCredentials:true})
+            .then(res => {
+                if (res.status !== 200) {
+                    throw new Error('Failed to add artifact');
+                }   
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to add artifact');
-            }
 
             Swal.fire({
                 title: 'Success!',

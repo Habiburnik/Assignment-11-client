@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../provider/AuthContext';
 import { Link, Navigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LikedArtifacts = () => {
     const { user } = useContext(AuthContext);
@@ -14,10 +15,9 @@ const LikedArtifacts = () => {
         
         if (!user?.email) return;
         setLoading(true);
-        fetch(`http://localhost:5001/liked-artifacts?userEmail=${(user.email)}`)
-            .then(res => res.json())
-            .then(data => {
-                setLiked(data);
+        axios.get(`http://localhost:5001/liked-artifacts?userEmail=${(user.email)}`, {withCredentials:true})
+            .then(res => {
+                setLiked(res.data);
                 setError(null);
             })
             .catch(err => {

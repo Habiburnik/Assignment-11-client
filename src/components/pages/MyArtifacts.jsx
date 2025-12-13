@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const artifactTypes = ["Tools", "Weapons", "Documents", "Writings", "Pottery", "Jewelry", "Sculpture", "Religious"];
 
@@ -20,10 +21,9 @@ const MyArtifacts = () => {
 	useEffect(() => {
 		if (!user?.email) return;
 		setLoading(true);
-		fetch(`http://localhost:5001/my-artifacts?userEmail=${(user.email)}`)
-			.then(res => res.json())
-			.then(data => {
-				setArtifacts(data);
+		axios.get(`http://localhost:5001/my-artifacts?userEmail=${(user.email)}`, {withCredentials:true})
+			.then(res => {
+				setArtifacts(res.data);
 				setError(null);
 			})
 			.catch(() => {

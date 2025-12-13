@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SocialLogins from './../SocialLogins';
 import AuthContext from '../../provider/AuthContext';
+import axios from 'axios';
 
 const Login = () => {
     useEffect(() => {
@@ -21,6 +22,8 @@ const Login = () => {
         userLogin(email, password)
         .then(result => {
             const user = result.user
+            const userEmail = user.email
+            axios.post('http://localhost:5001/jwt', {userEmail}, {withCredentials:true})
             setUser(user);
             navigate(location?.state ? location.state : "/" )
         })
