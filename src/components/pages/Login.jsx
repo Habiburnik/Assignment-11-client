@@ -1,9 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SocialLogins from './../SocialLogins';
 import AuthContext from '../../provider/AuthContext';
 
 const Login = () => {
+    useEffect(() => {
+        document.title = 'Login - Ancient Quest';
+    }, []);
     const { userLogin, setUser }= useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate(); 

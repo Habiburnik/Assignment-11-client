@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
+import Loading from './Loading';
 
 const ArtifactsDetails = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const ArtifactsDetails = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = artifact?.artifactName ? `${artifact.artifactName} - Ancient Quest` : 'Artifact Details - Ancient Quest';
 
         const fetchArtifact = async () => {
             try {
@@ -47,7 +49,7 @@ const ArtifactsDetails = () => {
         };
 
         fetchArtifact();
-    }, [id, user?.email]);
+    }, [id, user?.email, artifact?.artifactName]);
 
     const handleLike = async () => {
         if (!user) {
@@ -101,10 +103,7 @@ const ArtifactsDetails = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="spinner"></div>
-                <p className="ml-4 text-lg font-semibold">Loading artifact details...</p>
-            </div>
+            <Loading></Loading>
         );
     }
 

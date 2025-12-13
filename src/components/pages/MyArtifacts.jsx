@@ -14,6 +14,10 @@ const MyArtifacts = () => {
 	const [modalOpen, setModalOpen] = useState(false);
 
 	useEffect(() => {
+		document.title = 'My Artifacts - Ancient Quest';
+	}, []);
+
+	useEffect(() => {
 		if (!user?.email) return;
 		setLoading(true);
 		fetch(`http://localhost:5001/my-artifacts?userEmail=${(user.email)}`)
@@ -132,20 +136,44 @@ const MyArtifacts = () => {
 
 			{/* Modal for update */}
 			{modalOpen && (
-				<div className="fixed inset-0 bg-[#ddb892] bg-opacity-40 flex items-center justify-center z-50">
-					<form onSubmit={handleUpdate} className="bg-[#e6ccb2] rounded-lg p-8 w-full max-w-lg shadow-2xl space-y-4">
+				<div className="fixed inset-0 bg-white/50  bg bg-opacity-40 flex items-center justify-center z-50">
+					<form onSubmit={handleUpdate} className="bg-[#e6ccb2] mt-25 rounded-lg p-8 w-full max-w-lg shadow-2xl space-y-4">
 						<h3 className="text-2xl font-bold mb-4 text-[#432818]">Update Artifact</h3>
+						<div>
+							<label className= 'text-sm text-[#9c6644]'>Artifact Name</label>
 						<input type="text" name="artifactName" value={editData.artifactName} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Name" required />
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Artifact Image</label>
 						<input type="text" name="artifactImage" value={editData.artifactImage} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Image URL" required />
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Artifact Type</label>
 						<select name="artifactType" value={editData.artifactType} onChange={handleEditChange} className="select w-full text-[#ede0d4] bg-[#9c6644]" required>
 							<option value="">Select Type</option>
 							{artifactTypes.map(type => <option key={type} value={type}>{type}</option>)}
 						</select>
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Historical Context</label>
 						<textarea name="historicalContext" value={editData.historicalContext} onChange={handleEditChange} className="textarea w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Historical Context" required />
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Created At</label>
 						<input type="text" name="createdAt" value={editData.createdAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Created At (e.g., 100 BC)" required />
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Discovered At</label>
 						<input type="text" name="discoveredAt" value={editData.discoveredAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered At (e.g., 1799)" required />
+						</div>
+						<div>
+							<label className='text-sm text-[#9c6644]'>Discovered By</label>
 						<input type="text" name="discoveredBy" value={editData.discoveredBy} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered By" required />
+						</div>	
+						<div>
+							<label className='text-sm text-[#9c6644]'>Present Location</label>
 						<input type="text" name="presentLocation" value={editData.presentLocation} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Present Location" required />
+						</div>
 						<div className="flex gap-4 mt-4">
 							<button type="submit" className="btn bg-[#7f5539] border-none text-[#ede0d4]">Update Artifact</button>
 							<button type="button" className="btn text-[#ede0d4] border-none bg-[#9b3d12]" onClick={closeModal}>Cancel</button>

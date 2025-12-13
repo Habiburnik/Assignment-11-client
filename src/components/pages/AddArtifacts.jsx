@@ -1,9 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
 
 const AddArtifacts = () => {
+    useEffect(() => {
+        document.title = 'Add Artifact - Ancient Quest';
+    }, []);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [error, setError] = useState("");

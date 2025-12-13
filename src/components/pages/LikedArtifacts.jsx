@@ -10,6 +10,7 @@ const LikedArtifacts = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        document.title = 'Liked Artifacts - Ancient Quest';
         
         if (!user?.email) return;
         setLoading(true);

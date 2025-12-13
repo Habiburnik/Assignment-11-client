@@ -1,8 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../../provider/AuthContext';
 
 const Register = () => {
+    useEffect(() => {
+        document.title = 'Register - Ancient Quest';
+    }, []);
     const { createNewUser, updateUserProfile, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 

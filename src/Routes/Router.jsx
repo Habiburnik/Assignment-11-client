@@ -10,6 +10,7 @@ import PrivateRoute from "./PrivateRoute";
 import ArtifactsDetails from "../components/pages/ArtifactsDetails";
 import LikedArtifacts from "../components/pages/LikedArtifacts";
 import MyArtifacts from "../components/pages/MyArtifacts";
+import NotFound from "../components/pages/NotFound";
 
 
 
@@ -39,8 +40,12 @@ const Router = createBrowserRouter([
                 element: <PrivateRoute><LikedArtifacts></LikedArtifacts></PrivateRoute>
             },
             {
-                path:"/myArtifacts",
-                element:<PrivateRoute><MyArtifacts></MyArtifacts></PrivateRoute>
+                path: "/myArtifacts",
+                element: <PrivateRoute><MyArtifacts></MyArtifacts></PrivateRoute>
+            },
+            {
+                path: '*',
+                element: <NotFound></NotFound>
             }
         ]
     },
@@ -48,7 +53,7 @@ const Router = createBrowserRouter([
         path: 'auth',
         element: <Auth></Auth>,
         children: [
-                        {
+            {
                 path: '/auth/login',
                 element: <Login></Login>
             },
@@ -57,6 +62,10 @@ const Router = createBrowserRouter([
                 element: <Register></Register>
             }
         ]
+    },
+    {
+        path: '*',
+        element: <NotFound></NotFound>
     }
 
 ]);
