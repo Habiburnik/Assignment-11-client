@@ -8,7 +8,7 @@ const Login = () => {
     useEffect(() => {
         document.title = 'Login - Ancient Quest';
     }, []);
-    const { userLogin, setUser }= useContext(AuthContext);
+    const { userLogin, setUser } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate(); 
 

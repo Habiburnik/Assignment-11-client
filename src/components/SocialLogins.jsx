@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../provider/AuthContext";
+// import axios from "axios";
 
 const SocialLogins = () => {
   const { signInWithGoogle } = useContext(AuthContext);
@@ -11,6 +12,7 @@ const SocialLogins = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithGoogle();
+      // axios.post('http://localhost:5001/jwt', {result}, {withCredentials:true})
       const user = result.user;
       toast.success(`Welcome ${user.displayName || "User"}!`);
       navigate("/");

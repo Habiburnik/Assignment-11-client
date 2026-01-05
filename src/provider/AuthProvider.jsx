@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from '../firebase/firebase.config'
 import AuthContext from './AuthContext';
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const auth = getAuth(app);
 
@@ -47,20 +49,44 @@ const AuthProvider = ({ children }) => {
         loading,
         updateUserProfile,
         createNewUser,
-        logOut
+        logOut,
+        setLoading
         
     }
 
     useEffect(() =>{
         const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
+            if (currentUser?.email) {
+                // const user = { email: currentUser.email };
+
+                 setUser(currentUser);
+
+                // axios.post('http://localhost:5001/jwt', user, { withCredentials: true })
+                //     .then(response => {
+                //         console.log('JWT response:', response);
+                        setLoading(false);
+                //     })
+                //     .catch(error => {
+                //         console.error('Error fetching JWT:', error);
+                //     });
+                    
+            }
+            else {
+                axios.post(`http://localhost:5001/logout`, {}, { withCredentials: true })
+                    .then(response => {
+                        console.log('Logged out from server:', response);
+                        setLoading(false);
+                        setUser(null);
+                    })
+
+                    }
+
         })
         return () => {
             unsubcribe();
         }
 
-    },[])
+    },[loading])
 
         return <AuthContext.Provider value={authInfo}>
             {children}

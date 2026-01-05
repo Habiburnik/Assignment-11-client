@@ -6,6 +6,7 @@ import AuthContext from '../provider/AuthContext';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
+
     const subMenu = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/allArtifacts'>All Artifacts</Link></li>
