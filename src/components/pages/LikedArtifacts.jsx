@@ -17,7 +17,7 @@ const LikedArtifacts = () => {
 
         if (!user?.email) return;
         setLoading(true);
-        axiosSecure.get(`http://localhost:5001/liked-artifacts?userEmail=${(user.email)}`)
+        axiosSecure.get(`/liked-artifacts?userEmail=${(user.email)}`)
             .then(res => {
                 setLiked(res.data);
                 setError(null);

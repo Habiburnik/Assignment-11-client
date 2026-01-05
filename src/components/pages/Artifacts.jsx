@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const Artifacts = () => {
     const [artifacts, setArtifacts] = useState([]);
+    const axiosSecure = UseAxiosSecure();
 
     useEffect(() => {
-        fetch('http://localhost:5001/artifacts')
-            .then(res => res.json())
-            .then(data => {
+        axiosSecure.get('/artifacts')
+            .then(res => {
+                const data = res.data;
                 // Sort by createdAt in descending order
                 const sorted = data
                     .sort((a, b) => new Date(b.likeCount) - new Date(a.likeCount))

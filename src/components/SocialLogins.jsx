@@ -12,7 +12,6 @@ const SocialLogins = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithGoogle();
-      // axios.post('http://localhost:5001/jwt', {result}, {withCredentials:true})
       const user = result.user;
       toast.success(`Welcome ${user.displayName || "User"}!`);
       navigate("/");

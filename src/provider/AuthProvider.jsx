@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from '../firebase/firebase.config'
-import AuthContext from './AuthContext';
+import AuthContext from './AuthContext';   
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 
 const auth = getAuth(app);
 
@@ -57,24 +56,16 @@ const AuthProvider = ({ children }) => {
     useEffect(() =>{
         const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser?.email) {
-                // const user = { email: currentUser.email };
-
                  setUser(currentUser);
-
-                // axios.post('http://localhost:5001/jwt', user, { withCredentials: true })
-                //     .then(response => {
-                //         console.log('JWT response:', response);
-                        setLoading(false);
-                //     })
-                //     .catch(error => {
-                //         console.error('Error fetching JWT:', error);
-                //     });
-                    
+                axios.post('http://localhost:5001/jwt', { email: currentUser.email })   
+                .then(() => {
+                    // console.log(data.data.token);
+                    setLoading(false);
+                })
             }
             else {
                 axios.post(`http://localhost:5001/logout`, {}, { withCredentials: true })
-                    .then(response => {
-                        console.log('Logged out from server:', response);
+                    .then( () => {
                         setLoading(false);
                         setUser(null);
                     })

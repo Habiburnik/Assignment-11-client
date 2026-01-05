@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const AddArtifacts = () => {
     useEffect(() => {
@@ -12,6 +12,7 @@ const AddArtifacts = () => {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const axiosSecure = UseAxiosSecure();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,7 +52,7 @@ const AddArtifacts = () => {
         };
 
         try {
-            axios.post('http://localhost:5001/addArtifact', artifactData, {withCredentials:true})
+            axiosSecure.post('/addArtifact', artifactData)
             .then(res => {
                 if (res.status !== 200) {
                     throw new Error('Failed to add artifact');

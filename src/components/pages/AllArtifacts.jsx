@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const AllArtifacts = () => {
     const [artifacts, setArtifacts] = useState([]);
@@ -8,6 +9,7 @@ const AllArtifacts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const axiosSecure = UseAxiosSecure();
 
     useEffect(() => {
         document.title = 'All Artifacts - Ancient Quest';
@@ -16,11 +18,14 @@ const AllArtifacts = () => {
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const res = await fetch('http://localhost:5001/allArtifacts');
-                if (!res.ok) throw new Error('Failed to fetch artifacts');
-                const data = await res.json();
-                setArtifacts(data);
-                setFilteredArtifacts(data);
+                 axiosSecure.get('/allArtifacts')
+                 .then (res => {
+                    const data = res.data;
+                    setArtifacts(data);
+                    setFilteredArtifacts(data);
+                 }
+                )
+
             } catch (err) {
                 console.error(err);
                 setError(err.message);

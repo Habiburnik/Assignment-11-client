@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
 import Loading from './Loading';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const ArtifactsDetails = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const ArtifactsDetails = () => {
     const [loading, setLoading] = useState(true);
     const [liking, setLiking] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
+    const axiosSecure = UseAxiosSecure();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -20,18 +22,21 @@ const ArtifactsDetails = () => {
 
         const fetchArtifact = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/artifact/${id}`);
-                if (!response.ok) throw new Error('Artifact not found');
-                const data = await response.json();
-                setArtifact(data);
+                axiosSecure.get(`/artifact/${id}`)
+                .then (res => {
+                    const data = res.data;
+                    setArtifact(data);
+                 }
+                )
                 // if user is logged in, check like history
                 if (user?.email) {
                     try {
-                        const chk = await fetch(`http://localhost:5001/likes/check?artifactId=${id}&userEmail=${encodeURIComponent(user.email)}`);
-                        if (chk.ok) {
-                            const chkJson = await chk.json();
-                            setIsLiked(!!chkJson.isLiked);
-                        }
+                        axiosSecure.get(`/likes/check?artifactId=${id}&userEmail=${encodeURIComponent(user.email)}`)
+                        .then (res => {
+                            const data = res.data;
+                            setIsLiked(!!data.isLiked);
+                            }
+                        )
                     } catch (e) {
                         console.warn('Like check failed', e);
                     }
@@ -49,7 +54,7 @@ const ArtifactsDetails = () => {
         };
 
         fetchArtifact();
-    }, [id, user?.email, artifact?.artifactName]);
+    }, [id, user?.email, artifact?.artifactName, axiosSecure]);
 
     const handleLike = async () => {
         if (!user) {
@@ -63,13 +68,8 @@ const ArtifactsDetails = () => {
 
         setLiking(true);
         try {
-                const response = await fetch(`http://localhost:5001/artifact/${id}/like`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({artifactImage:artifact?.artifactImage  , userEmail: user.email, artifactName: artifact?.artifactName })
-                });
+                const response = await axiosSecure.patch(`/artifact/${id}/like`, 
+                    {artifactImage:artifact?.artifactImage  , userEmail: user.email, artifactName: artifact?.artifactName });
 
             if (!response.ok) throw new Error('Failed to update like');
 
@@ -79,7 +79,6 @@ const ArtifactsDetails = () => {
                 ...updatedData,
                 likeCount: typeof updatedData.likeCount === 'number' ? updatedData.likeCount : (prevArtifact.likeCount + 1)
             }));
-            // mark liked and disable button
             setIsLiked(true);
 
             Swal.fire({

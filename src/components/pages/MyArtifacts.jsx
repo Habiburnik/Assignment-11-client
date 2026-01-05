@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../provider/AuthContext';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const artifactTypes = ["Tools", "Weapons", "Documents", "Writings", "Pottery", "Jewelry", "Sculpture", "Religious"];
 
@@ -13,6 +13,7 @@ const MyArtifacts = () => {
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState(null);
 	const [modalOpen, setModalOpen] = useState(false);
+	const axiosSecure = UseAxiosSecure();
 
 	useEffect(() => {
 		document.title = 'My Artifacts - Ancient Quest';
@@ -21,7 +22,7 @@ const MyArtifacts = () => {
 	useEffect(() => {
 		if (!user?.email) return;
 		setLoading(true);
-		axios.get(`http://localhost:5001/my-artifacts?userEmail=${(user.email)}`, {withCredentials:true})
+		axiosSecure.get(`/my-artifacts?userEmail=${(user.email)}`)
 			.then(res => {
 				setArtifacts(res.data);
 				setError(null);
@@ -53,20 +54,17 @@ const MyArtifacts = () => {
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`http://localhost:5001/artifact/${editId}`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					artifactName: editData.artifactName,
-					artifactImage: editData.artifactImage,
-					artifactType: editData.artifactType,
-					historicalContext: editData.historicalContext,
-					createdAt: editData.createdAt,
-					discoveredAt: editData.discoveredAt,
-					discoveredBy: editData.discoveredBy,
-					presentLocation: editData.presentLocation
-				})
+			const res = await axiosSecure.patch(`/artifact/${editId}`, {
+				artifactName: editData.artifactName,
+				artifactImage: editData.artifactImage,		
+				artifactType: editData.artifactType,
+				historicalContext: editData.historicalContext,
+				createdAt: editData.createdAt,
+				discoveredAt: editData.discoveredAt,
+				discoveredBy: editData.discoveredBy,
+				presentLocation: editData.presentLocation
 			});
+
 			if (!res.ok) throw new Error('Update failed');
 			Swal.fire({ icon: 'success', title: 'Updated!', text: 'Artifact updated successfully.' });
 			// update local state
@@ -87,9 +85,8 @@ const MyArtifacts = () => {
 		}).then(async (result) => {
 			if (result.isConfirmed) {
 				try {
-					const res = await fetch(`http://localhost:5001/artifact/${id}`, { method: 'DELETE' }
+					const res = await axiosSecure.delete(`/artifact/${id}`);
 
-					);
 					if (!res.ok) throw new Error('Delete failed');
 					setArtifacts(arts => arts.filter(a => a._id !== id));
 					Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Artifact deleted.' });
