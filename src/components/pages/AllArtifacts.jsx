@@ -35,7 +35,7 @@ const AllArtifacts = () => {
         };
         fetchAll();
 
-    }, []);
+    }, [axiosSecure]);
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
