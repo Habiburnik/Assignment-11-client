@@ -16,7 +16,7 @@ const Artifacts = () => {
                     .slice(0, 6); // Take the latest 6
                 setArtifacts(sorted);
             });
-    }, []);
+    }, [axiosSecure]);
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

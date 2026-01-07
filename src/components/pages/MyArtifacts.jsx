@@ -32,7 +32,7 @@ const MyArtifacts = () => {
 				setArtifacts([]);
 			})
 			.finally(() => setLoading(false));
-	}, [user?.email]);
+	}, [user?.email, axiosSecure]);
 
 	const openEditModal = (artifact) => {
 		setEditId(artifact._id);

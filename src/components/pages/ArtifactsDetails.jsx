@@ -71,9 +71,7 @@ const ArtifactsDetails = () => {
                 const response = await axiosSecure.patch(`/artifact/${id}/like`, 
                     {artifactImage:artifact?.artifactImage  , userEmail: user.email, artifactName: artifact?.artifactName });
 
-            if (!response.ok) throw new Error('Failed to update like');
-
-            const updatedData = await response.json();
+            const updatedData = response.data;
             setArtifact(prevArtifact => ({
                 ...prevArtifact,
                 ...updatedData,

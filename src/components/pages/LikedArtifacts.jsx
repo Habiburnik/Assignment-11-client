@@ -5,9 +5,10 @@ import Loading from './Loading';
 import UseAxiosSecure from '../hooks/UseAxiosSecure';
 
 const LikedArtifacts = () => {
-    const { loading, setLoading, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [liked, setLiked] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const axiosSecure = UseAxiosSecure();
 
@@ -15,7 +16,10 @@ const LikedArtifacts = () => {
         window.scrollTo(0, 0);
         document.title = 'Liked Artifacts - Ancient Quest';
 
-        if (!user?.email) return;
+        if (!user?.email) {
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         axiosSecure.get(`/liked-artifacts?userEmail=${(user.email)}`)
             .then(res => {
@@ -27,12 +31,13 @@ const LikedArtifacts = () => {
                 setLiked([]);
             })
             .finally(() => setLoading(false));
-    }, [user?.email, axiosSecure, setLoading]);
+    }, [user?.email, axiosSecure]);
 
     if (loading) {
         return <Loading></Loading>;
     }
-    else if (!liked.length) {
+
+    if (!loading && !liked.length) {
         return <>
             <div className="min-h-screen flex flex-col gap-8 items-center justify-center text-[#432818] font-bold text-2xl">
                 <p> You haven't liked any artifacts yet!</p>

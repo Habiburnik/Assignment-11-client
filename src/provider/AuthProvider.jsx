@@ -57,11 +57,11 @@ const AuthProvider = ({ children }) => {
         const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser?.email) {
                  setUser(currentUser);
-                axios.post('http://localhost:5001/jwt', { email: currentUser.email })   
-                .then(() => {
+                // axios.post('http://localhost:5001/jwt', { email: currentUser.email })   
+                // .then(() => {
                     // console.log(data.data.token);
                     setLoading(false);
-                })
+                // })
             }
             else {
                 axios.post(`http://localhost:5001/logout`, {}, { withCredentials: true })
@@ -77,7 +77,7 @@ const AuthProvider = ({ children }) => {
             unsubcribe();
         }
 
-    },[loading])
+    },[])
 
         return <AuthContext.Provider value={authInfo}>
             {children}
