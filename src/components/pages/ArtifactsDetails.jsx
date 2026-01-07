@@ -22,39 +22,26 @@ const ArtifactsDetails = () => {
 
         const fetchArtifact = async () => {
             try {
-                axiosSecure.get(`/artifact/${id}`)
-                .then (res => {
-                    const data = res.data;
-                    setArtifact(data);
-                 }
-                )
-                // if user is logged in, check like history
+                setLoading(true);
+
+                const res = await axiosSecure.get(`/artifact/${id}`);
+                setArtifact(res.data);
+
                 if (user?.email) {
-                    try {
-                        axiosSecure.get(`/likes/check?artifactId=${id}&userEmail=${encodeURIComponent(user.email)}`)
-                        .then (res => {
-                            const data = res.data;
-                            setIsLiked(!!data.isLiked);
-                            }
-                        )
-                    } catch (e) {
-                        console.warn('Like check failed', e);
-                    }
+                    const likeRes = await axiosSecure.get(
+                        `/likes/check?artifactId=${id}&userEmail=${encodeURIComponent(user.email)}`
+                    );
+                    setIsLiked(!!likeRes.data.isLiked);
                 }
             } catch (error) {
                 console.error('Error fetching artifact:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Failed to load artifact details',
-                    icon: 'error'
-                });
             } finally {
                 setLoading(false);
             }
         };
 
         fetchArtifact();
-    }, [id, user?.email, artifact?.artifactName, axiosSecure]);
+    }, [id, user?.email, axiosSecure, artifact?.artifactName]);
 
     const handleLike = async () => {
         if (!user) {
@@ -68,8 +55,8 @@ const ArtifactsDetails = () => {
 
         setLiking(true);
         try {
-                const response = await axiosSecure.patch(`/artifact/${id}/like`, 
-                    {artifactImage:artifact?.artifactImage  , userEmail: user.email, artifactName: artifact?.artifactName });
+            const response = await axiosSecure.patch(`/artifact/${id}/like`,
+                { artifactImage: artifact?.artifactImage, userEmail: user.email, artifactName: artifact?.artifactName });
 
             const updatedData = response.data;
             setArtifact(prevArtifact => ({
@@ -121,7 +108,7 @@ const ArtifactsDetails = () => {
     return (
         <div className="min-h-screen pt-25 bg-gradient-to-br from-[#d4a574] to-[#c19a6b] py-12 px-4">
             <div className="max-w-5xl mx-auto">
-                <button 
+                <button
                     onClick={() => navigate(-1)}
                     className="mb-6 btn btn-sm bg-[#432818] text-[#ede0d4] border-none hover:bg-[#5a3a24]"
                 >
@@ -132,8 +119,8 @@ const ArtifactsDetails = () => {
                     <div className="grid md:grid-cols-2 gap-8 p-8">
                         <div className="flex flex-col justify-center">
                             <div className="rounded-lg overflow-hidden shadow-lg mb-6 h-96">
-                                <img 
-                                    src={artifact.artifactImage} 
+                                <img
+                                    src={artifact.artifactImage}
                                     alt={artifact.artifactName}
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                 />
@@ -199,13 +186,13 @@ const ArtifactsDetails = () => {
                     </div>
                 </div>
                 <div className="flex justify-between mt-8 gap-4">
-                    <button 
+                    <button
                         onClick={() => navigate('/allArtifacts')}
                         className="btn bg-[#7f5539] text-[#ede0d4] border-none hover:bg-[#5a3a24] flex-1"
                     >
                         View All Artifacts
                     </button>
-                    <button 
+                    <button
                         onClick={() => navigate('/')}
                         className="btn bg-[#7f5539] text-[#ede0d4] border-none hover:bg-[#5a3a24] flex-1"
                     >

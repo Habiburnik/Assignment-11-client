@@ -56,7 +56,7 @@ const MyArtifacts = () => {
 		try {
 			const res = await axiosSecure.patch(`/artifact/${editId}`, {
 				artifactName: editData.artifactName,
-				artifactImage: editData.artifactImage,		
+				artifactImage: editData.artifactImage,
 				artifactType: editData.artifactType,
 				historicalContext: editData.historicalContext,
 				createdAt: editData.createdAt,
@@ -65,13 +65,24 @@ const MyArtifacts = () => {
 				presentLocation: editData.presentLocation
 			});
 
-			if (!res.ok) throw new Error('Update failed');
-			Swal.fire({ icon: 'success', title: 'Updated!', text: 'Artifact updated successfully.' });
-			// update local state
-			setArtifacts(arts => arts.map(a => a._id === editId ? { ...a, ...editData } : a));
-			closeModal();
+			if (res.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Updated!',
+					text: 'Artifact updated successfully.'
+				});
+
+				setArtifacts(arts =>
+					arts.map(a => a._id === editId ? { ...a, ...editData } : a)
+				);
+				closeModal();
+			}
 		} catch {
-			Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to update artifact.' });
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'Failed to update artifact.'
+			});
 		}
 	};
 
@@ -87,11 +98,20 @@ const MyArtifacts = () => {
 				try {
 					const res = await axiosSecure.delete(`/artifact/${id}`);
 
-					if (!res.ok) throw new Error('Delete failed');
-					setArtifacts(arts => arts.filter(a => a._id !== id));
-					Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Artifact deleted.' });
+					if (res.status === 200) {
+						setArtifacts(arts => arts.filter(a => a._id !== id));
+						Swal.fire({
+							icon: 'success',
+							title: 'Deleted!',
+							text: 'Artifact deleted.'
+						});
+					}
 				} catch {
-					Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to delete artifact.' });
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'Failed to delete artifact.'
+					});
 				}
 			}
 		});
@@ -137,39 +157,39 @@ const MyArtifacts = () => {
 					<form onSubmit={handleUpdate} className="bg-[#e6ccb2] mt-25 rounded-lg p-8 w-full max-w-lg shadow-2xl space-y-4">
 						<h3 className="text-2xl font-bold mb-4 text-[#432818]">Update Artifact</h3>
 						<div>
-							<label className= 'text-sm text-[#9c6644]'>Artifact Name</label>
-						<input type="text" name="artifactName" value={editData.artifactName} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Name" required />
+							<label className='text-sm text-[#9c6644]'>Artifact Name</label>
+							<input type="text" name="artifactName" value={editData.artifactName} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Name" required />
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Artifact Image</label>
-						<input type="text" name="artifactImage" value={editData.artifactImage} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Image URL" required />
+							<input type="text" name="artifactImage" value={editData.artifactImage} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Artifact Image URL" required />
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Artifact Type</label>
-						<select name="artifactType" value={editData.artifactType} onChange={handleEditChange} className="select w-full text-[#ede0d4] bg-[#9c6644]" required>
-							<option value="">Select Type</option>
-							{artifactTypes.map(type => <option key={type} value={type}>{type}</option>)}
-						</select>
+							<select name="artifactType" value={editData.artifactType} onChange={handleEditChange} className="select w-full text-[#ede0d4] bg-[#9c6644]" required>
+								<option value="">Select Type</option>
+								{artifactTypes.map(type => <option key={type} value={type}>{type}</option>)}
+							</select>
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Historical Context</label>
-						<textarea name="historicalContext" value={editData.historicalContext} onChange={handleEditChange} className="textarea w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Historical Context" required />
+							<textarea name="historicalContext" value={editData.historicalContext} onChange={handleEditChange} className="textarea w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Historical Context" required />
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Created At</label>
-						<input type="text" name="createdAt" value={editData.createdAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Created At (e.g., 100 BC)" required />
+							<input type="text" name="createdAt" value={editData.createdAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Created At (e.g., 100 BC)" required />
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Discovered At</label>
-						<input type="text" name="discoveredAt" value={editData.discoveredAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered At (e.g., 1799)" required />
+							<input type="text" name="discoveredAt" value={editData.discoveredAt} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered At (e.g., 1799)" required />
 						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Discovered By</label>
-						<input type="text" name="discoveredBy" value={editData.discoveredBy} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered By" required />
-						</div>	
+							<input type="text" name="discoveredBy" value={editData.discoveredBy} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Discovered By" required />
+						</div>
 						<div>
 							<label className='text-sm text-[#9c6644]'>Present Location</label>
-						<input type="text" name="presentLocation" value={editData.presentLocation} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Present Location" required />
+							<input type="text" name="presentLocation" value={editData.presentLocation} onChange={handleEditChange} className="input w-full text-[#ede0d4] bg-[#9c6644]" placeholder="Present Location" required />
 						</div>
 						<div className="flex gap-4 mt-4">
 							<button type="submit" className="btn bg-[#7f5539] border-none text-[#ede0d4]">Update Artifact</button>

@@ -64,7 +64,8 @@ const AuthProvider = ({ children }) => {
                 // })
             }
             else {
-                axios.post(`http://localhost:5001/logout`, {}, { withCredentials: true })
+                // axios.post(`https://assignment-11-server-sandy-iota.vercel.app/logout`, {}, { withCredentials: true })
+                axios.post('http://localhost:5001/logout', {}, { withCredentials: true })
                     .then( () => {
                         setLoading(false);
                         setUser(null);

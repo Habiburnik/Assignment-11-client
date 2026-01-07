@@ -18,13 +18,11 @@ const AllArtifacts = () => {
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                 axiosSecure.get('/allArtifacts')
-                 .then (res => {
-                    const data = res.data;
-                    setArtifacts(data);
-                    setFilteredArtifacts(data);
-                 }
-                )
+                setLoading(true);
+
+                const res = await axiosSecure.get('/allArtifacts');
+                setArtifacts(res.data);
+                setFilteredArtifacts(res.data);
 
             } catch (err) {
                 console.error(err);
@@ -33,14 +31,14 @@ const AllArtifacts = () => {
                 setLoading(false);
             }
         };
-        fetchAll();
 
+        fetchAll();
     }, [axiosSecure]);
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
         setSearchQuery(query);
-        
+
         if (query === '') {
             setFilteredArtifacts(artifacts);
         } else {
