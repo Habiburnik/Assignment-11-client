@@ -3,16 +3,22 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../provider/AuthContext";
+import UseAxiosSecure from "./hooks/UseAxiosSecure";
 // import axios from "axios";
 
 const SocialLogins = () => {
-  const { signInWithGoogle } = useContext(AuthContext);
+  const { signInWithGoogle, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure = UseAxiosSecure();
 
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithGoogle();
       const user = result.user;
+
+      await axiosSecure.post("/jwt", { userEmail: user.email });
+
+      setUser(user);
       toast.success(`Welcome ${user.displayName || "User"}!`);
       navigate("/");
     } catch (error) {
